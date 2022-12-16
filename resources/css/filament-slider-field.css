@@ -1,0 +1,25 @@
+@tailwind utilities;
+
+.filament-ui-slider-field-wrapper {
+    position: relative;
+    margin: 0 auto 3rem;
+}
+
+.filament-ui-slider-field-value {
+    padding: 4px 12px;
+    position: absolute;
+    border-radius: 4px;
+    left: 50%;
+    top: 25px;
+    transform: translateX(-50%);
+}
+
+.filament-ui-slider-field-value::after {
+    content: "";
+    position: absolute;
+    width: 2px;
+    height: 4px;
+    top: -3px;
+    left: 50%;
+    background-color: inherit;
+}

@@ -1,17 +1,17 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "diegobas/filament-slider-field",
+    "description": "Slider field for FilamentPHP",
     "keywords": [
-        ":vendor_name",
+        "diegobas",
         "laravel",
-        ":package_slug"
+        "filament-slider-field"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/diegobas/filament-slider-field",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "Diego Bas",
+            "email": "diegobas@gmail.com",
             "role": "Developer"
         }
     ],
@@ -22,35 +22,28 @@
         "illuminate/contracts": "^9.0"
     },
     "require-dev": {
-        "laravel/pint": "^1.0",
         "nunomaduro/collision": "^6.0",
-        "nunomaduro/larastan": "^2.0.1",
         "orchestra/testbench": "^7.0",
         "pestphp/pest": "^1.21",
         "pestphp/pest-plugin-laravel": "^1.1",
         "pestphp/pest-plugin-livewire": "^1.0",
         "pestphp/pest-plugin-parallel": "^0.3",
-        "phpstan/extension-installer": "^1.1",
-        "phpstan/phpstan-deprecation-rules": "^1.0",
-        "phpstan/phpstan-phpunit": "^1.0",
         "phpunit/phpunit": "^9.5",
         "spatie/laravel-ray": "^1.26"
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories"
+            "DiegoBas\\SliderField\\": "src",
+            "DiegoBas\\SliderField\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests"
+            "DiegoBas\\SliderField\\Tests\\": "tests"
         }
     },
     "scripts": {
-        "pint": "vendor/bin/pint",
         "test:pest": "vendor/bin/pest --parallel",
-        "test:phpstan": "vendor/bin/phpstan analyse",
         "test": [
             "@test:pest",
             "@test:phpstan"
@@ -67,10 +60,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
+                "DiegoBas\\SliderField\\SliderFieldServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\Facades\\Skeleton"
+                "SliderField": "DiegoBas\\SliderField\\Facades\\SliderField"
             }
         }
     },
