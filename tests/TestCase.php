@@ -2,11 +2,11 @@
 
 namespace DiegoBas\SliderField\Tests;
 
+use DiegoBas\SliderField\SliderFieldServiceProvider;
 use Filament\FilamentServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
-use DiegoBas\SliderField\SliderFieldServiceProvider;
 
 class TestCase extends Orchestra
 {
