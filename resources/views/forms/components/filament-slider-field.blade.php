@@ -8,6 +8,7 @@
     :hint-action="$getHintAction()"
     :hint-color="$getHintColor()"
     :hint-icon="$getHintIcon()"
+    :color="$getColor()"
     :required="$isRequired()"
     :state-path="$getStatePath()"
     :step="$getStep()"
@@ -31,6 +32,20 @@
                 this.setBubble(this.range, this.bubble)
             })
 
+            span = $refs.color_{{ str_replace('.', '_', $getId()) }}
+            color = window.getComputedStyle( span , null).getPropertyValue( 'background-color' )
+            track = window.getComputedStyle( this.range , null).getPropertyValue( 'background-color' )
+
+            const rgbToArr = (s) => s.substr(4, s.length - 5).trim().split(',')
+            const rgbToHex = (r, g, b) => '#' + (1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1)
+
+            c = rgbToArr(color)
+            t = rgbToArr(track)
+
+            this.range.style.setProperty('--ui-slider-color', rgbToHex(c[0], c[1], c[2]))
+            this.range.style.setProperty('--ui-slider-track', rgbToHex(t[0], t[1], t[2]))
+            this.range.style.setProperty('--ui-slider-active', `${rgbToHex(c[0], c[1], c[2])}33`)
+
             this.setBubble(this.range, this.bubble)
         },
 
@@ -38,16 +53,29 @@
             val = range.value
             min = range.min ? range.min : 0
             max = range.max ? range.max : 100
+            interval = 100 / (max - min)
+
             newVal = Number(((val - min) * 100) / (max - min))
+            percent = val * interval
+
             bubble.innerHTML = val
 
             // Sorta magic numbers based on size of the native UI thumb
             bubble.style.left = `calc(${newVal}% + (${6 - newVal * 0.15}px))`
-        }
+
+            range.style.setProperty('--ui-slider-percent', `${percent}%`)
+        },
     }">
-    <div class="w-full h-14 flex gap-2" wire:ignore>
+    <div id="filament-ui-slider-field" class="w-full h-14 flex gap-2" wire:ignore>
         <span class="flex-initial grid content-start -mt-1" x-ref="min_{{ str_replace('.', '_', $getId()) }}" x-text="minValue"></span>
         <div class="filament-ui-slider-field-wrapper grow">
+            @php
+                $outputColor = $getColor() ?? "gray";
+                $outputClass = "filament-ui-slider-field-value text-white after:bg-{$outputColor}-600 bg-{$outputColor}-600";
+                $inputClass = "filament-ui-slider-field w-full bg-gray-100 border-gray-300 border";
+                $colorClass = "bg-{$outputColor}-600";
+            @endphp
+            <span x-ref="color_{{ str_replace('.', '_', $getId()) }}" class="{{ $colorClass }}" style="width: 0px; height: 0px; display: none;"></span>
             <input
                 wire:loading.attr="disabled"
                 x-ref="input_{{ str_replace('.', '_', $getId()) }}"
@@ -57,8 +85,9 @@
                 max="maxValue"
                 step="{{ $getStep() }}"
                 value="{{ $getState() }}"
-                class="filament-ui-slider-field w-full" />
-            <output x-ref="value_{{ str_replace('.', '_', $getId()) }}" class="filament-ui-slider-field-value after:bg-primary-600 bg-primary-600 text-white"></output>
+                class="{{ $inputClass }}"
+                />
+            <output x-ref="value_{{ str_replace('.', '_', $getId()) }}" class="{{ $outputClass }}"></output>
         </div>
         <span class="grid content-start -mt-1" x-ref="max_{{ str_replace('.', '_', $getId()) }}" x-text="maxValue"></span>
     </div>
