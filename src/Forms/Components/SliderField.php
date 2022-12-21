@@ -9,7 +9,6 @@ use Filament\Forms\Components\Field;
 
 class SliderField extends Field
 {
-
     use Concerns\HasLabel;
     use Concerns\HasState;
     use Concerns\HasStep;
@@ -47,7 +46,7 @@ class SliderField extends Field
         return $this->evaluate($this->color);
     }
 
-    public function minValue(int | Closure $minValue = 0): static
+    public function minValue(int|Closure $minValue = 0): static
     {
         $this->minValue = $minValue;
 
@@ -59,7 +58,7 @@ class SliderField extends Field
         return $this->evaluate($this->minValue);
     }
 
-    public function maxValue(int | Closure $maxValue = 100): static
+    public function maxValue(int|Closure $maxValue = 100): static
     {
         $this->maxValue = $maxValue;
 
