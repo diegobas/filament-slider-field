@@ -18,6 +18,8 @@ class SliderField extends Field
     protected int | Closure $minValue = 0;
     protected int | Closure $maxValue = 100;
     protected string | Closure | null $color = 'primary';
+    protected bool $hexColor = false;
+    protected bool $ticks = false;
 
     protected function setUp(): void
     {
@@ -44,6 +46,30 @@ class SliderField extends Field
     public function getColor(): ?string
     {
         return $this->evaluate($this->color);
+    }
+
+    public function hexColor(bool $hexColor = true): static
+    {
+        $this->hexColor = $hexColor;
+
+        return $this;
+    }
+
+    public function getHexColor(): bool
+    {
+        return $this->hexColor;
+    }
+
+    public function ticks(bool $ticks = true): static
+    {
+        $this->ticks = $ticks;
+
+        return $this;
+    }
+
+    public function getTicks(): bool
+    {
+        return $this->ticks;
     }
 
     public function minValue(int|Closure $minValue = 0): static

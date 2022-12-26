@@ -22,11 +22,11 @@ class SliderFieldServiceProvider extends PluginServiceProvider
     ];
 
     protected array $styles = [
-        'plugin-filament-slider-field' => __DIR__.'/../resources/css/filament-slider-field.css',
+        'plugin-filament-slider-field' => __DIR__.'/../resources/dist/filament-slider-field.css',
     ];
 
     protected array $scripts = [
-        'plugin-filament-slider-field' => __DIR__.'/../resources/js/filament-slider-field.js',
+        'plugin-filament-slider-field' => __DIR__.'/../resources/dist/filament-slider-field.js',
     ];
 
     // protected array $beforeCoreScripts = [

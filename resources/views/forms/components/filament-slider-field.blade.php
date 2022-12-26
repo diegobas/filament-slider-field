@@ -14,6 +14,8 @@
     :step="$getStep()"
     :min-value="$getMinValue()"
     :max-value="$getMaxValue()"
+    :color="$getColor()"
+    :ticks="$getTicks()"
     x-data="{
         state: $wire.entangle('{{ $getStatePath() }}').defer,
         minValue: {{ $getMinValue() }},
@@ -36,11 +38,14 @@
             color = window.getComputedStyle( span , null).getPropertyValue( 'background-color' )
             track = window.getComputedStyle( this.range , null).getPropertyValue( 'background-color' )
 
-            const rgbToArr = (s) => s.substr(4, s.length - 5).trim().split(',')
+            const rgbToArr = (s) => s.substr(0, 4) == 'rgba' ? s.substr(5, s.length - 6).trim().split(',') : s.substr(4, s.length - 5).trim().split(',')
             const rgbToHex = (r, g, b) => '#' + (1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1)
 
             c = rgbToArr(color)
             t = rgbToArr(track)
+
+            console.log('C: ' + c);
+            console.log('T: ' + t);
 
             this.range.style.setProperty('--ui-slider-color', rgbToHex(c[0], c[1], c[2]))
             this.range.style.setProperty('--ui-slider-track', rgbToHex(t[0], t[1], t[2]))
@@ -70,12 +75,13 @@
         <span class="flex-initial grid content-start -mt-1" x-ref="min_{{ str_replace('.', '_', $getId()) }}" x-text="minValue"></span>
         <div class="filament-ui-slider-field-wrapper grow">
             @php
-                $outputColor = $getColor() ?? "gray";
-                $outputClass = "filament-ui-slider-field-value text-white after:bg-{$outputColor}-600 bg-{$outputColor}-600";
+                $outputColorClass = $getHexColor() ? "" : ("after:bg-{$getColor()}-600 bg-{$getColor()}-600" ?? "after:bg-gray-300 bg-gray-300");
+                $outputColorStyle = $getHexColor() ? "background-color: " . ($getColor() ?? "#555") . ";" : "";
+                $outputClass = "filament-ui-slider-field-value text-white {$outputColorClass}";
                 $inputClass = "filament-ui-slider-field w-full bg-gray-100 border-gray-300 border";
-                $colorClass = "bg-{$outputColor}-600";
+                $colorClass = "{$outputColorClass}";
             @endphp
-            <span x-ref="color_{{ str_replace('.', '_', $getId()) }}" class="{{ $colorClass }}" style="width: 0px; height: 0px; display: none;"></span>
+            <span x-ref="color_{{ str_replace('.', '_', $getId()) }}" class="{{ $colorClass }}" style="width: 0px; height: 0px; display: none; {{ $outputColorStyle }}"></span>
             <input
                 wire:loading.attr="disabled"
                 x-ref="input_{{ str_replace('.', '_', $getId()) }}"
@@ -86,8 +92,16 @@
                 step="{{ $getStep() }}"
                 value="{{ $getState() }}"
                 class="{{ $inputClass }}"
+                list="steplist"
                 />
-            <output x-ref="value_{{ str_replace('.', '_', $getId()) }}" class="{{ $outputClass }}"></output>
+            @if ($getTicks())
+            <datalist class="filament-ui-slider-field-ticks w-full flex justify-between">
+            @for ($i = 0; $i <= ($getMaxValue() - $getMinValue()); $i++)
+                <option class="p-0 m-0 leading-none text-black">|</option>
+            @endfor
+            </datalist>
+            @endif
+            <output x-ref="value_{{ str_replace('.', '_', $getId()) }}" class="{{ $outputClass }}" style="{{ $outputColorStyle }}"></output>
         </div>
         <span class="grid content-start -mt-1" x-ref="max_{{ str_replace('.', '_', $getId()) }}" x-text="maxValue"></span>
     </div>
